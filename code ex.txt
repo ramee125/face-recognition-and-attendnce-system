@@ -1,0 +1,66 @@
+This code performs face recognition using the Haar cascade classifier and histogram comparison. 
+Let's go through the code step by step:
+
+The code begins by importing necessary libraries and modules such as os, cv2 (OpenCV), skimage.
+io, numpy, and sys. These libraries are used for various operations such as file handling, image processing, and 
+time measurement.
+The variable training_folder_path is set to the path of the folder containing the training images.
+This path should be updated to the appropriate folder location on your system.
+The start_time variable is set to measure the execution time of the code.
+
+The face detection model is loaded using cv2.CascadeClassifier and the path to the Haar cascade classifier
+ file is provided (cv2.data.haarcascades + 'haarcascade_frontalface_default.xml').
+
+A dictionary named training_images is created to store the loaded training images. 
+The code iterates over each file in the training folder, checks if it has a valid image file extension (.jpg, .jpeg, or .png)
+
+and loads the image using cv2.imread. The image is then added to the dictionary using the file name as the key.
+
+The code prompts the user to enter the path to the input image.
+
+It checks if the input image file exists using os.path.isfile. If the file doesn't exist, 
+an error message is printed, and if the code exits.
+The input image is loaded using cv2.imread.
+
+The input image is converted to grayscale using cv2.cvtColor.
+
+The code detects faces in the input image using face_detector.detectMultiScale. 
+This function returns the bounding boxes of the detected faces.
+
+For each detected face, the code extracts the region of interest (ROI) from the grayscale input image.
+
+The face ROI is resized to the same size as the training images (100x100 pixels).
+
+The code iterates through each training image and compares the histogram similarity between the 
+input face ROI and the training image using cv2.compareHist
+It calculates the histograms of both images using cv2.calcHist and compares them using the correlation method (cv2.HISTCMP_CORREL).
+
+If the similarity score is higher than the previous best match, the best match name and score are updated.
+
+After iterating through all training images and finding the best match, the code outputs the name of the training image with the best match. 
+If a match is found, it also writes the result to a text file named "output.txt" on the desktop.
+
+If no match is found, a message indicating that no match was found in the training images is printed.
+
+The end_time variable is set to measure the execution time, and the total execution time is calculated by subtracting start_time from end_time.
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+The code creates a multiprocessing pool with 3 processes (pool = multiprocessing.Pool(processes=3)).
+
+The calculate_histogram_similarity function is applied to each face bounding box and grayscale input image using pool.starmap.
+ This parallelizes the face detection process, allowing multiple faces to be processed simultaneously.
+The results of the parallel processing are stored in the results list.
+
+The name of the training image with the best match is determined by finding the most frequent result in the results
+ list using max(results, key=lambda x: results.count(x), default=None).
+
+If a best match is found, the name of the training image is printed, and the result is written to a text file named "output.txt" on the desktop.
+
+
+
+C:/Users/Rameesha/Desktop/r.png.jpg
+
+C:/Users/Rameesha/Desktop/janith.png.jpg
+
+
